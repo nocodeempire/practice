@@ -4,6 +4,21 @@
   <meta charset="UTF-8">
   <title>Title</title>
   <script src="https://unpkg.com/vue"></script>
+  <style>
+    body {
+      font-size: 20px
+    }
+    input[type="text"]{
+      height:18px;
+    }
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+    }
+    .active{
+      background-color: red;
+    }
+  </style>
 </head>
 <body>
 <div id="app">
@@ -11,24 +26,139 @@
   <input type="checkbox" v-model="checked">
   <label for="checkbox">{{ checked }}</label>
   <div>
-    <input type="checkbox" value="1" v-model="checkboxVal">
-    <input type="checkbox" value="2" v-model="checkboxVal">
-    <input type="checkbox" value="3" v-model="checkboxVal">
+    <input type="checkbox" value="1" v-model="checkboxVal">1
+    <input type="checkbox" value="2" v-model="checkboxVal">2
+    <input type="checkbox" value="3" v-model="checkboxVal">3
+    <div v-if="checkboxVal.length>0 ? true :false">{{checkboxVal}}</div>
   </div>
+  <div>
+    <select name=""  v-model="selectedVal">
+      <option value="" disabled>请选择</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+    </select>
+    <span>{{selectedVal}}</span>
+  </div>
+  <div>
+    <select name=""  v-model="bindVal">
+      <option v-for="item in items" :value="item.name">{{item.name}}</option>
+    </select>
+    {{bindVal}}
+  </div>
+  <div>
+    <select name="" v-model="objVal">
+      <option :value="{number:111}">111</option>
+    </select>
+  </div>
+  <!--lazy 旨在change事件后改变model值-->
+  <input type="text"  v-model.lazy="lazyVal">{{lazyVal}}
+  <!--在console中测试结果 number类型-->
+  <input type="text" v-model.number="numberval">
+  <my-component :class="{active:checkboxVal.length>0?checked : false}"></my-component>
+  <input type="text" v-model="lazyVal">
+  <!--虽然模板里面是lazyV 但是需要遵循html规则,要么全部小写,要么已"-"分隔大小写-->
+  <muban :lazy-V="lazyVal"></muban>
+  <!--这个是不绑定数据的 直接页面写死-->
+  <ceshi message="hello"></ceshi>
+  <input type="text" v-model="validatorVal">
+  <!--验证失败会报错-->
+  <aaaccc :num="validatorVal"></aaaccc>
+  <div>
+    <!--有点难理解刚开始,需要反复练习-->
+    <div>{{total}}</div>
+    <total-cal v-on:fat="fatCount"></total-cal>
+    <total-cal v-on:fat="fatCount"></total-cal>
+  </div>
+
+
 </div>
+
+
 <script>
-  var app= new Vue({
-    el:"#app",
-    data:{
-      inputVal:"input框的值",
-      checked:true,
-      checkboxVal:[]
+  Vue.component("total-cal",{
+    template:`<button v-on:click="add">{{count}}</button>`,
+    data(){
+      return{
+        count:0
+      }
+    },
+    methods:{
+      add(){
+        this.count++;
+//        定义一个子组件的名称,一旦事件触发,在调用模板里面添加v-on,通知其父
+        this.$emit("fat");
+      }
+    }
+
+  })
+  Vue.component("my-component",{
+    template:`<div>
+      <p>ES6拼字符串语法</p>
+      <p>看看效果</p>
+    </div>`
+  });
+  Vue.component("aaaccc",{
+    props:{
+      num:{
+        validator:function(val){
+          return parseInt(val)>10
+        }
+      }
+    },
+    template:`<div>hello: {{num}}</div>`
+  });
+  var app = new Vue({
+    el: "#app",
+    data() {
+      return{
+        inputVal: "input框的值",
+        checked: true,
+        checkboxVal: [],
+        selectedVal: "",
+        numberval:0,
+        bindVal:"ccc",
+        lazyVal:"lazyVal测试",
+        objVal:"",
+        items:[
+          {id:1,name:"aaa"},
+          {id:2,name:"bbb"},
+          {id:3,name:"ccc"}
+        ],
+        validatorVal:11,
+        total:0
+      }
+    },
+    methods:{
+      fatCount(){
+        this.total++
+      }
     },
 //    监听事件 checkbox变化时checkboxVal的值变化
-    watch:{
-      checkboxVal:function(val){
-        console.log(val);
+    watch: {
+      checkboxVal: function (val) {
+        console.log("checkboxVal------" + val);
+      },
+      selectedVal: function (val) {
+        console.log("selectedVal------" + val);
+      },
+      objVal:function(val){
+        console.log(val.number);
       }
+    },
+    components:{
+      "muban":{
+        props:["lazyV"],
+//        防止子组件的值随父组件一直变化
+        template:`
+          <div>{{lazyV}}</div>
+        `
+      },
+      "ceshi":{
+        props:["message"],
+        template:`<span>{{message}}</span>`
+      }
+
     }
   })
 </script>
