@@ -70,12 +70,20 @@
     <total-cal v-on:fat="fatCount"></total-cal>
     <total-cal v-on:fat="fatCount"></total-cal>
   </div>
-
+  <update-father :val.sync="inputVal"></update-father>
 
 </div>
 
 
 <script>
+  Vue.component("updateFather",{
+    template:`<input type=text v-model="val">`,
+    data (){
+      return{
+        val:1
+      }
+    }
+  })
   Vue.component("total-cal",{
     template:`<button v-on:click="add">{{count}}</button>`,
     data(){
@@ -144,6 +152,9 @@
       },
       objVal:function(val){
         console.log(val.number);
+      },
+      inputVal:function(val){
+        console.log(val);
       }
     },
     components:{
