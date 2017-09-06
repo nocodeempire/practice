@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://unpkg.com/vue"></script>
+  <style>
+    .active{
+      background-color: darkred;
+    }
+  </style>
+</head>
+<body>
+<div id="app-2">
+  <span v-bind:title="message">
+    鼠标悬停几秒钟查看此处动态绑定的提示信息！
+  </span>
+  <p></p>
+  <p v-if="seen">显示与隐藏</p>
+  <ul>
+    <li v-for="item in items">{{item.name}}----------{{item.id}}</li>
+  </ul>
+  <div>
+    <!--这些表达式会在所属 Vue 实例的数据作用域下作为 JavaScript 被解析。有个限制就是，每个绑定都只能包含单个表达式-->
+    {{ number + 1 }}
+    {{ number ? 'YES' : 'NO' }}
+    {{ message.split('').reverse().join('') }}
+  </div>
+  <div v-bind:title="'list-' + number">{{ number }}</div>
+  <button v-on:click="clickEvent">事件</button>
+  <input type="text" v-model="message">
+  <div>
+    <!--v-bind:item="item" 这个很重要 不然报错-->
+    <comp v-for="item in items" v-bind:item="item" v-bind:key="item.name"></comp>
+  </div>
+  <a href="http://www.baidu.com" v-on:click.prevent="clickEvent">阻止默认事件</a>
+  <div v-text="'计算属性'+messageMethod"></div>
+  <div v-bind:class="{active:seen}">class属性测试</div>
+  <div v-bind:style="styleObj">style测试</div>
+  <template v-if="seen">
+    <input type="text" placeholder="111">
+  </template>
+  <template v-else>
+    <input type="text" placeholder="222">
+  </template>
+  <button @click="()=>this.seen=this.seen?false:true">切换template模板</button>
+  <ul>
+    <li v-for="(item,index) in items" :key="item.id">{{item.name}}========{{index}}</li>
+  </ul>
+  <ol>
+    <li v-for="val in styleObj">{{val}}</li>
+  </ol>
+  <ul>
+    <li v-for='n in 10'>{{n}}</li>
+  </ul>
+  <!--push() 最后插入-->
+  <!--pop() 删除最后项-->
+  <!--shift() 删除第一项-->
+  <!--unshift() 插入第一项-->
+  <!--splice()-->
+  <!--sort()-->
+  <!--reverse()-->
+</div>
+
+
+<script>
+  /*全局组件需放在前面,不然无法加载*/
+  Vue.component("comp",{
+//    自定义名称,对应着data数据里数组的一项项
+    props:['item'],
+    template: "<div>{{item.name}}</div>"
+  })
+  var app2 = new Vue({
+    el: '#app-2',
+    data: {
+      message: '页面加载于 ' + new Date().toLocaleString(),
+      seen: true,
+      items:[
+        {id:1,name:"张三"},
+        {id:2,name:"李四"},
+        {id:3,name:"王五"}
+      ],
+      number:1,
+      styleObj:{
+        color:"red",
+        "font-size":"20px"
+      }
+    },
+    methods:{
+      clickEvent(event){
+        this.message=this.message.split("").reverse().join("")
+        console.log(event);
+      }
+    },
+//    生命钩子
+    created(){
+      console.log(this.items);
+    },
+//    计算属性
+    computed:{
+      messageMethod(){
+        return this.message+='111';
+      }
+
+    }
+  })
+  app2.$watch("message",function(newV,oldV){
+    console.log(newV+"-------------"+oldV);
+  })
+
+</script>
+
+
+</body>
+</html>

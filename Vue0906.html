@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+<div id="app">
+  <input type="text" v-model="inputVal">
+  <input type="checkbox" v-model="checked">
+  <label for="checkbox">{{ checked }}</label>
+  <div>
+    <input type="checkbox" value="1" v-model="checkboxVal">
+    <input type="checkbox" value="2" v-model="checkboxVal">
+    <input type="checkbox" value="3" v-model="checkboxVal">
+  </div>
+</div>
+<script>
+  var app= new Vue({
+    el:"#app",
+    data:{
+      inputVal:"input框的值",
+      checked:true,
+      checkboxVal:[]
+    },
+//    监听事件 checkbox变化时checkboxVal的值变化
+    watch:{
+      checkboxVal:function(val){
+        console.log(val);
+      }
+    }
+  })
+</script>
+</body>
+</html>
