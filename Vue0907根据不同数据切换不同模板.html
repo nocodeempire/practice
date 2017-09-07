@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+<div id="app">
+  <!--可在控制台变化看结果-->
+  <component :is="currentView"></component>
+</div>
+<script>
+
+  var vm = new Vue({
+    el:"#app",
+    data(){
+      return{
+        currentView:"home"
+      }
+    },
+    components:{
+      home:{
+        template:`<div>home</div>`
+      },
+      posts:{
+        template:`<div>posts</div>`
+      },
+      jack:{
+        template:`<div>jack</div>`
+      },
+    }
+  })
+</script>
+</body>
+</html>
