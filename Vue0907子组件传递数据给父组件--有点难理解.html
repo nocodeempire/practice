@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+<div id="app">
+  <div>{{fatherVal}}</div>
+  <my-component :sonval.sync="fatherVal"></my-component>
+
+</div>
+<script>
+  Vue.component("my-component",{
+    data(){
+      return {num:this.sonval}
+    },
+    props:["sonval"],
+    template:`<button @click="increateFun">子组件数据传递给父组件</button>`,
+    methods:{
+      increateFun(){
+        this.$emit("update:sonval",++this.num)
+      }
+    }
+  });
+
+  var vm = new Vue({
+    el:"#app",
+    data(){
+      return{
+        fatherVal:0
+      }
+    }
+  })
+</script>
+</body>
+</html>
