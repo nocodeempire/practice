@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<script>
+  var arr=[1,2,34,5,3,24,56,33];
+//  find 返回一个匹配的元素
+  var array=arr.find(function(el,index){
+    console.log(el+"-------"+index);
+    return el>30;
+  })
+  console.log(array);
+  const love="love";
+//  repeat 重复次数
+  console.log(love.repeat(100));
+</script>
+</body>
+</html>
