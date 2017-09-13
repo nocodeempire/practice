@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev":"webpack-dev-server --open"
+    "dev": "webpack-dev-server --open"
   },
   "keywords": [],
   "author": "",
@@ -31,7 +31,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "jquery": "^3.2.1",
-    "mint-ui": "^2.2.7",
+    "mint-ui": "^2.2.9",
     "moment": "^2.18.1",
     "vue": "^2.3.4",
     "vue-preview": "^1.0.5",
